@@ -77,7 +77,7 @@ const db = mysql.createConnection({
       var quantity = parseInt(val.quantity)
 
       if(quantity > product.stock_quantity) {
-        console.log("not enough inventory to process yoour request");
+        console.log("not enough inventory to process your request");
         productLoad();
       }
 

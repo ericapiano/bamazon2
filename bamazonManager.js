@@ -104,39 +104,59 @@ function viewInventory(){
   });
 }
 
-// // allows user to add inventory
-// function addInventory() {
-//   inquirer.prompt([
-//     {
-//       type: "input",
-//       name: "productName",
-//       message:"write product here"
-//     },
-//     {
-//       type: "input",
-//       name: "deptName",
-//       message:"write department it belongs to"
-//     },
-//     {
-//       type: "input",
-//       name: "productPrice",
-//       message:"write price"
-//     },
-//     {
-//       type: "input",
-//       name: "productQuantity",
-//       message:"write quantity youre adding"
-//     }
-//   ]).then(function(ans){
-//     var post = {
-//       product_name: ans.productName,
-//       price: ans.productPrice,
-//       department_name: ans.deptName,
-//       stock_quantity: ans.productQuantity
-//     };
+// allows user to add inventory
+function addInventory() {
+  inquirer.prompt([
+    {
+      type: "input",
+      name: "productName",
+      message:"write product here"
+    },
+    {
+      type: "input",
+      name: "deptName",
+      message:"write department it belongs to"
+    },
+    {
+      type: "input",
+      name: "productPrice",
+      message:"write price"
+    },
+    {
+      type: "input",
+      name: "productQuantity",
+      message:"write quantity youre adding"
+    }
+  ]).then(function (order) {
+    var addQuantity = order.quantity;
+    var itemid = order.productId;
+    var query = db.query(
+        `SELECT stock_quantity FROM products WHERE ?`,
+        [{
+            item_id: itemid
+        }],
+        function (error, results, field) {
+            var currentQuantity = results[0].stock_quantity
+            var query = db.query(
+                `UPDATE products SET ? WHERE ?`,
+                [{
+                        stock_quantity: parseInt(currentQuantity) + parseInt(addQuantity)
+                    },
+                    {
+                        item_id: itemid
+                    }
+                ],
+                function (error, results) {
+                    console.log(` You now have a total stock of ${parseInt(currentQuantity) + parseInt(addQuantity)} units for product ID ${itemid}`)
+                    connection.end();
+                }
+            )
+        })
+})
+}
 
 //   var query = db.query(
-//     "INSERT INTO products SET ?", post, 
+//     "INSERT INTO products SET ?" 
 //     {
 //       product_name: "",
 //       price: 3.00,
