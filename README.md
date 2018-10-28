@@ -13,7 +13,7 @@ In this activity I used node.js and mySQL to create a store front from the comma
 * Use "ctrl + c" to exit each mode
 
 ## Demo Link
-![available Inventory](images/availabileinventory.png);
+![available Inventory](images/availabileinventory.png)
 
 
 
